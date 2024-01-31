@@ -29,9 +29,9 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="productMainButton">
+        <widget class="QPushButton" name="carsMainButton">
          <property name="text">
-          <string>PRODUCTOS</string>
+          <string>CARROS</string>
          </property>
         </widget>
        </item>

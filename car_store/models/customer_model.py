@@ -1,6 +1,34 @@
-import psycopg2
+from database_model import Database
 
-class CustomerModel:
-    def __init__(self) -> None:
-        self._conn = psycopg2.connect("dbname= user= password= host=localhost")
+class CustomersModel:
+    def __init__(self):
+        self._db = Database()
+        self._conn = self._db.connect()
         self._cur = self._conn.cursor()
+
+    # Modelo para obtener los clientes desde la base de datos
+
+    def get_customers(self):
+        query = "SELECT * FROM customers ORDER BY last_name"
+        self._cur.execute(query)
+        return self._cur.fetchall()
+    
+    # Modelo para agregar registros a la tabla clientes a la base datos
+
+    def create_customers(self, document, first_name, last_name, email):
+        query = "INSERT INTO customers (document, first_name, last_name, email) VALUES (%s, %s, %s, %s)"
+        self._cur.execute(query, (document, first_name, last_name, email))
+        self._conn.commit()
+
+    # Modelo para actualizar los registros de la tabla clientes
+        
+    def update_customers(self, id_customer, document, first_name, last_name, email):
+        query = "UPDATE customers SET document = %s, first_name = %s, last_name = %s, email = %s WHERE id_customer = %s"
+        self._cur.execute(query, (document, first_name, last_name, email, id_customer))
+        self._conn.commit()
+
+    # Función para cerrar las conexiones
+
+    def close(self):
+        self._cur.close()
+        self._conn.close()
