@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton
 from PyQt5 import uic
 import pathlib
-from category_table import CategoryTable
+from controllers.category_table import CategoryTable
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:

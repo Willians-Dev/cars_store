@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QTableWidget" name="categoryTableWidget">
+     <widget class="QTableWidget" name="categoryTable">
       <column>
        <property name="text">
         <string>ID</string>

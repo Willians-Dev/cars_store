@@ -17,7 +17,7 @@ class Database:
         self._conn = None
 
     def connect(self):
-        if self.conn is None:
+        if self._conn is None:
             try:
                 self._conn = psycopg2.connect(
                     dbname="nombre_basedatos",

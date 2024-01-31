@@ -1,4 +1,4 @@
-from database_model import Database
+from models.database_model import Database
 
 class CategoryModel:
     def __init__(self):
@@ -25,6 +25,20 @@ class CategoryModel:
     def update_categories(self, id_category, category_name, description):
         query = "UPDATE category SET category_name = %s, description = %s WHERE id_category = %s"
         self._cur.execute(query, (id_category, category_name, description))
+        self._conn.commit()
+
+    def get_category_by_id(self, category_id):
+        try:
+            query = "SELECT * FROM category WHERE id_category = id %s"
+            self._cur.execute(query, (category_id,))
+            return self._cur.fetchone()
+        except Exception as e:
+            print(f"Error al obtener la categoria: {str(e)}")
+            return None
+        
+    def delete_category(self, student_id):
+        query = "DELETE FROM category WHERE id_category = %s"
+        self._cur.execute(query, {student_id})
         self._conn.commit()
         
     # Función para cerrar las conexiones
