@@ -23,7 +23,7 @@ class CustomersModel:
     # Modelo para actualizar los registros de la tabla clientes
         
     def update_customers(self, id_customer, document, first_name, last_name, email):
-        query = "UPDATE customers SET document = %s, first_name = %s, last_name = %s, email = %s WHERE id_customer = %s"
+        query = "UPDATE customer SET document = %s, first_name = %s, last_name = %s, email = %s WHERE id_customer = %s"
         self._cur.execute(query, (document, first_name, last_name, email, id_customer))
         self._conn.commit()
 
