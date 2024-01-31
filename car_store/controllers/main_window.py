@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton
 from PyQt5 import uic
 import pathlib
 from controllers.category_table import CategoryTable
+from controllers.customer_table import CustomersTable
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -11,6 +12,7 @@ class MainWindow(QMainWindow):
         uic.loadUi(root_path / "views/main_window.ui", self)
 
         self._category_table = CategoryTable() 
+        self._customer_table = CustomersTable() 
 
         self.category_main_button = self.findChild(QPushButton, "categoryMainButton")
         self.category_main_button.clicked.connect(self.open_categoryTable)
@@ -31,7 +33,7 @@ class MainWindow(QMainWindow):
         print("Abrir ventana de productos")
 
     def open_customers_window(self):
-        print("Abrir ventana de clientes")
+        self._customer_table.show()
 
     def open_purchases_window(self):
         print("Abrir ventana de compras")

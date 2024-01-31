@@ -1,4 +1,4 @@
-from database_model import Database
+from models.database_model import Database
 
 class CustomersModel:
     def __init__(self):

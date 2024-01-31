@@ -8,12 +8,12 @@ class CustomersTable(QMainWindow):
     def __init__(self):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
-        uic.loadUi(root_path / "views/main_customer.ui", self)
+        uic.loadUi(root_path / "views/main_costumer.ui", self)
         self._customer_model = CustomersModel()
         self.load_customer()
         self.customerForm = CustomerForm()
         self.addNewCustomerForm.triggered.connect(lambda: self.customerForm.show())
-        self.quitCustomerFormButton.category_saved.connect(self.on_customer_saved) 
+        self.customerForm.customer_saved.connect(self.on_customer_saved) 
 
     def on_customer_saved(self):
         self.customerForm.close()
@@ -94,5 +94,5 @@ class CustomersTable(QMainWindow):
             success_msg.exec_()
 
     def closeEvent(self, ev) -> None:
-        self._category_model.close()
+        self._customer_model.close()
         return super().closeEvent(ev)
