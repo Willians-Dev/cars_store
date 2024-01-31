@@ -19,6 +19,11 @@
      <widget class="QTableWidget" name="costumerTableWidget">
       <column>
        <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>Cedula</string>
        </property>
       </column>

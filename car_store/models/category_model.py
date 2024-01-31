@@ -16,7 +16,7 @@ class CategoryModel:
     # Modelo para insertar datos en la tabla categoria
 
     def create_categories(self, category_name, description):
-        query = "INSERT INTO customers (category_name, description) VALUES (%s, %s)"
+        query = "INSERT INTO category (category_name, description) VALUES (%s, %s)"
         self._cur.execute(query, (category_name, description))
         self._conn.commit()
 
@@ -29,7 +29,7 @@ class CategoryModel:
 
     def get_category_by_id(self, category_id):
         try:
-            query = "SELECT * FROM category WHERE id_category = id %s"
+            query = "SELECT * FROM category WHERE id_category = %s"
             self._cur.execute(query, (category_id,))
             return self._cur.fetchone()
         except Exception as e:

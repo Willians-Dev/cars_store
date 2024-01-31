@@ -20,9 +20,9 @@ class Database:
         if self._conn is None:
             try:
                 self._conn = psycopg2.connect(
-                    dbname="nombre_basedatos",
-                    user="usuario",
-                    password="contraseña",
+                    dbname="car_catalog",
+                    user="postgres",
+                    password="Trabajo123.",
                     host="localhost",
                     port="5432"
                 )
