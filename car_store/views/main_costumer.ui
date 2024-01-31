@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>customersTable</class>
+ <widget class="QMainWindow" name="customersTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Clientes</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableWidget" name="costumerTableWidget">
+      <column>
+       <property name="text">
+        <string>Cedula</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Nombre</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Apellido</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Correo</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Editar</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Eliminar</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="addNewCustomerForm"/>
+    <addaction name="quitCustomerFormButton"/>
+   </widget>
+   <addaction name="menuArchivo"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="addNewCustomerForm">
+   <property name="text">
+    <string>Nuevo Cliente</string>
+   </property>
+  </action>
+  <action name="quitCustomerFormButton">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
