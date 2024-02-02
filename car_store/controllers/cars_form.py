@@ -1,0 +1,62 @@
+import pathlib
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal
+from models.cars_model import CarsModel
+from PyQt5 import uic
+
+class CarsForm(QMainWindow):
+    cars_saved = pyqtSignal()
+    def __init__(self) -> None:
+        super().__init__()
+        self._cars_model = CarsModel()
+        self._cars_id = None
+        root_path = pathlib.Path(__file__).parent.parent
+        uic.loadUi(root_path / "views/cars_form.ui", self)     
+        self.saveCarsButton.clicked.connect(lambda: self.save_cars())
+        self.cancelCarsButton.clicked.connect(lambda: self.close())
+        self.clear_form_fields() 
+
+    # Metodo para limpiar los campos al abrir el studen_form                                                            ###################        
+    def clear_form_fields(self):
+        self.serialTextLine.setText("")
+        self.brandTextLine.setText("")
+        self.modelTextLine.setText("")
+        self.transmisionTextLine.setText("")
+        self.priceTextLine.setText("")
+        self.yearTextLine.setText("")
+        
+    # Método para guardar las categorias a traves del update_categoria
+    
+    def save_cars(self):
+        if self._cars_id:   
+            self._cars_model.update_cars(
+                self._cars_id,
+                self.serialTextLine.text(),
+                self.brandTextLine.text(),
+                self.modelTextLine.text(),
+                self.transmisionTextLine.text(),
+                self.priceTextLine.text(),
+                self.yearTextLine.text(),
+            )
+        else:
+            self._cars_model.create_cars(
+                self.serialTextLine.text(),
+                self.brandTextLine.text(),
+                self.modelTextLine.text(),
+                self.transmisionTextLine.text(),
+                self.priceTextLine.text(),
+                self.yearTextLine.text(),
+            )    
+        self.cars_saved.emit()
+        self.clear_form_fields()                     # Limpiar los campos después de guardar
+
+    def load_cars_data(self, cars_id):
+        self.cars_id = cars_id
+        cars_data = self._cars_model.get_cars_by_id(cars_id)
+        if cars_data:
+            self.serialTextLine.setText(cars_data[1])
+            self.brandTextLine.setText(cars_data[2])
+            self.modelTextLine.setText(cars_data[3])
+            self.transmisionTextLine.setText(cars_data[4])
+            self.priceTextLine.setText(cars_data[5])
+            self.yearTextLine.setText(cars_data[6])

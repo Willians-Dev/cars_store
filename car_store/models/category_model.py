@@ -36,9 +36,9 @@ class CategoryModel:
             print(f"Error al obtener la categoria: {str(e)}")
             return None
         
-    def delete_category(self, student_id):
+    def delete_category(self, category_id):
         query = "DELETE FROM category WHERE id_category = %s"
-        self._cur.execute(query, {student_id})
+        self._cur.execute(query, (category_id,))
         self._conn.commit()
         
     # Función para cerrar las conexiones

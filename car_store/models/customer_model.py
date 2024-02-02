@@ -38,7 +38,7 @@ class CustomersModel:
         
     def delete_customer(self, customer_id):
         query = "DELETE FROM customer WHERE id_customer = %s"
-        self._cur.execute(query, {customer_id})
+        self._cur.execute(query, (customer_id,))
         self._conn.commit()
 
     # Función para cerrar las conexiones

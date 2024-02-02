@@ -1,5 +1,5 @@
 import pathlib
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QPushButton, QHeaderView, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QTableWidgetItem, QPushButton, QHeaderView, QMessageBox, QMainWindow
 from PyQt5 import uic, QtCore
 from models.category_model import CategoryModel
 from controllers.category_form import CategoryForm
