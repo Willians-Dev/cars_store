@@ -9,24 +9,18 @@ class CategoryForm(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self._category_model = CategoryModel()
-        self._category_id = None
+        self.category_id = None
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/category_form.ui", self)     
         self.saveCategoryButton.clicked.connect(lambda: self.save_category())
         self.cancelCategoryButton.clicked.connect(lambda: self.close())
-        self.clear_form_fields() 
 
-    # Metodo para limpiar los campos al abrir el studen_form                                                            ###################        
-    def clear_form_fields(self):
-        self.categoryNameLineText.setText("")
-        self.categoryDescriptionLineText.setText("")
-    
     # Método para guardar las categorias a traves del update_categoria
     
     def save_category(self):
-        if self._category_id:   
+        if self.category_id:
             self._category_model.update_categories(
-                self.id_category,
+                self.category_id,
                 self.categoryNameLineText.text(),
                 self.categoryDescriptionLineText.text(),
             )
@@ -36,7 +30,7 @@ class CategoryForm(QMainWindow):
                 self.categoryDescriptionLineText.text(),
             )    
         self.category_saved.emit()
-        self.clear_form_fields()                     # Limpiar los campos después de guardar
+        self.close()                     # Limpiar los campos después de guardar
 
     def load_category_data(self, category_id):
         self.category_id = category_id
@@ -44,3 +38,8 @@ class CategoryForm(QMainWindow):
         if category_data:
             self.categoryNameLineText.setText(category_data[1])
             self.categoryDescriptionLineText.setText(category_data[2])
+
+    def reset_form(self):
+        self.categoryNameLineText.setText("")
+        self.categoryDescriptionLineText.setText("")
+        self.category_id = None

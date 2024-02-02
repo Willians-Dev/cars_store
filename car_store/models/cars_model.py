@@ -1,10 +1,10 @@
-from models.database_model import Database
+from models.database_model import DatabaseConnection
 
 class CarsModel:
     def __init__(self):
-        self._db = Database()
-        self._conn = self._db.connect()
-        self._cur = self._conn.cursor()
+        db = DatabaseConnection()
+        self._conn = db.connection
+        self._cur = db.cursor
 
     # Modelo para obtener los registro de la tabla cars de la base de datos
 
@@ -15,16 +15,26 @@ class CarsModel:
     
     # Modelo para agregar registros a la tabla cars a la base datos
 
-    def create_cars(self, serial_number, brand, model, transmision, price, year):
-        query = "INSERT INTO car (serial_number, brand, model, transmision, price, year) VALUES (%s, %s, %s, %s, %s, %s)"
-        self._cur.execute(query, (serial_number, brand, model, transmision, price, year))
-        self._conn.commit()
+    def create_cars(self, serial_number, brand, model, transmission, price, year):
+        query = """INSERT INTO car (serial_number, brand, model, transmission, price, year) VALUES (%s, %s, %s, %s, %s, %s) 
+                   ON CONFLICT (serial_number) 
+                   DO UPDATE SET brand = EXCLUDED.brand, model = EXCLUDED.model, transmission = EXCLUDED.transmission, price = EXCLUDED.price, year = EXCLUDED.year
+                   RETURNING id_car"""
+        try:
+            self._cur.execute(query, (serial_number, brand, model, transmission, price, year))
+            self._conn.commit()
+            print("Registro insertado correctamente.")
+        except Exception as e:
+            self._conn.rollback()
+            print("Error al insertar el registro:", e)
+    
+
 
     # Modelo para actualizar los registros de la tabla cars
         
-    def update_cars(self, id_car, serial_number, brand, model, transmision, price, year):
-        query = "UPDATE car SET serial_number = %s, brand = %s, model = %s, transmision = %s, price = %s, year = %s WHERE id_car = %s"
-        self._cur.execute(query, (id_car, serial_number, brand, model, transmision, price, year))
+    def update_cars(self, id_car, serial_number, brand, model, transmission, price, year):
+        query = "UPDATE car SET serial_number = %s, brand = %s, model = %s, transmission = %s, price = %s, year = %s WHERE id_car = %s"
+        self._cur.execute(query, (id_car, serial_number, brand, model, transmission, price, year))
         self._conn.commit()
 
     def get_cars_by_id(self, car_id):

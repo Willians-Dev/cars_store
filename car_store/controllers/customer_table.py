@@ -3,24 +3,20 @@ from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 from PyQt5 import uic, QtCore
 from models.customer_model import CustomersModel
 from controllers.customer_form import CustomerForm
+from models.database_model import DatabaseConnection
 
 class CustomersTable(QMainWindow):
     def __init__(self):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_costumer.ui", self)
+        self.customerForm = CustomerForm()
         self._customer_model = CustomersModel()
         self.load_customer()
-        self.customerForm = CustomerForm()
-        self.addNewCustomerForm.triggered.connect(lambda: self.customerForm.show())
-        self.customerForm.customer_saved.connect(self.on_customer_saved) 
 
-    def on_customer_saved(self):
-        self.customerForm.close()
-        self.load_customer()
-
-        # Metodo para cargar la base de datos en el customer_table
-    
+        self.addNewCustomerForm.triggered.connect(lambda: self.create_customer())
+        self.customerForm.customer_saved.connect(self.load_customer) 
+  
     def load_customer(self):
         customer_list = self._customer_model.get_customers()
         self.costumerTableWidget.setRowCount(len(customer_list))
@@ -32,6 +28,10 @@ class CustomersTable(QMainWindow):
             self.costumerTableWidget.setItem(i, 3, QTableWidgetItem(str(last_name)))
             self.costumerTableWidget.setItem(i, 4, QTableWidgetItem(str(email)))
             self.costumerTableWidget.item(i, 0).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.costumerTableWidget.item(i, 1).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.costumerTableWidget.item(i, 2).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.costumerTableWidget.item(i, 3).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.costumerTableWidget.item(i, 4).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
             # Botón para editar los clientes
              
@@ -66,6 +66,10 @@ class CustomersTable(QMainWindow):
 
     # Metodo para la eliminación de los resgistro a travez del category model
         
+    def create_customer(self):
+        self.customerForm.reset_form()
+        self.customerForm.show()
+
     def delete_customer(self):
         sender = self.sender()
         row = sender.property("row")
@@ -94,5 +98,6 @@ class CustomersTable(QMainWindow):
             success_msg.exec_()
 
     def closeEvent(self, ev) -> None:
-        self._customer_model.close()
+        db = DatabaseConnection()
+        db.close()
         return super().closeEvent(ev)

@@ -2,6 +2,7 @@ import pathlib
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QPushButton, QHeaderView, QMessageBox, QMainWindow
 from PyQt5 import uic, QtCore
 from models.cars_model import CarsModel
+from models.database_model import DatabaseConnection
 from controllers.cars_form import CarsForm
 
 class CarsTable(QMainWindow):
@@ -9,23 +10,19 @@ class CarsTable(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_cars.ui", self)
+        self.carsrForm = CarsForm()
         self._cars_model = CarsModel()
         self.load_cars()
-        self.carsrForm = CarsForm()
-        self.newCarFormButton.triggered.connect(lambda: self.carsrForm.show())
-        self.carsrForm.cars_saved.connect(self.on_cars_saved) 
-
-    def on_cars_saved(self):
-        self.carsrForm.close()
-        self.load_cars()
-
+        self.newCarFormButton.triggered.connect(lambda: self.create_cars())
+        self.carsrForm.cars_saved.connect(self.load_cars)
+        
         # Metodo para cargar la base de datos en el cars_table
     
     def load_cars(self):
         cars_list = self._cars_model.get_cars()
         self.carsTableWidget.setRowCount(len(cars_list))
         for i, cars in enumerate(cars_list):
-            id_car, serial_number, brand, model, transmission, price, year = cars
+            id_car, serial_number, brand, model, transmission, price, year, *extra = cars
             self.carsTableWidget.setItem(i, 0, QTableWidgetItem(str(id_car)))
             self.carsTableWidget.setItem(i, 1, QTableWidgetItem(str(serial_number)))
             self.carsTableWidget.setItem(i, 2, QTableWidgetItem(str(brand)))
@@ -34,6 +31,12 @@ class CarsTable(QMainWindow):
             self.carsTableWidget.setItem(i, 5, QTableWidgetItem(str(price)))
             self.carsTableWidget.setItem(i, 6, QTableWidgetItem(str(year)))
             self.carsTableWidget.item(i, 0).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 1).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 2).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 3).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 4).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 5).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 6).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
             # Botón para editar los carros
              
@@ -66,6 +69,10 @@ class CarsTable(QMainWindow):
         row = sender.property("row")
         cars_id = self.carsTableWidget.item(row, 0).text()
         self.carsrForm.load_cars_data(cars_id)
+        self.carsrForm.show()
+
+    def create_cars(self):
+        self.carsrForm.reset_form()
         self.carsrForm.show()
 
     # Metodo para la eliminación de los resgistro a travez del cars model

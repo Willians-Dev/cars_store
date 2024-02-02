@@ -1,10 +1,10 @@
-from models.database_model import Database
+from models.database_model import DatabaseConnection
 
 class CustomersModel:
     def __init__(self):
-        self._db = Database()
-        self._conn = self._db.connect()
-        self._cur = self._conn.cursor()
+        db = DatabaseConnection()
+        self._conn = db.connection
+        self._cur = db.cursor
 
     # Modelo para obtener los clientes desde la base de datos
 
@@ -17,15 +17,19 @@ class CustomersModel:
 
     def create_customers(self, document, first_name, last_name, email):
         query = "INSERT INTO customer (document, first_name, last_name, email) VALUES (%s, %s, %s, %s)"
-        self._cur.execute(query, (document, first_name, last_name, email))
+        self._cur.execute(query, (int(document), first_name, last_name, email))
         self._conn.commit()
 
     # Modelo para actualizar los registros de la tabla clientes
         
     def update_customers(self, id_customer, document, first_name, last_name, email):
-        query = "UPDATE customer SET document = %s, first_name = %s, last_name = %s, email = %s WHERE id_customer = %s"
-        self._cur.execute(query, (document, first_name, last_name, email, id_customer))
-        self._conn.commit()
+        try:
+            query = "UPDATE customer SET document = %s, first_name = %s, last_name = %s, email = %s WHERE id_customer = %s"
+            self._cur.execute(query, (document, first_name, last_name, email, id_customer))
+            self._conn.commit()
+        except Exception as e:
+            print(f"Error al actualizar la categoria: {str(e)}")
+            return None
 
     def get_customers_by_id(self, customer_id):
         try:
@@ -33,16 +37,13 @@ class CustomersModel:
             self._cur.execute(query, (customer_id,))
             return self._cur.fetchone()
         except Exception as e:
-            print(f"Error al obtener la categoria: {str(e)}")
+            print(f"Error al obtener el cliente: {str(e)}")
             return None
         
     def delete_customer(self, customer_id):
-        query = "DELETE FROM customer WHERE id_customer = %s"
-        self._cur.execute(query, (customer_id,))
-        self._conn.commit()
-
-    # Función para cerrar las conexiones
-
-    def close(self):
-        self._cur.close()
-        self._conn.close()
+        try:
+            query = "DELETE FROM customer WHERE id_customer = %s"
+            self._cur.execute(query, (customer_id,))
+            self._conn.commit()
+        except Exception as e:
+            print(f"Error: {str(e)}")

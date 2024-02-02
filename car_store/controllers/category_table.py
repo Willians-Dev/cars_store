@@ -2,6 +2,7 @@ import pathlib
 from PyQt5.QtWidgets import QTableWidgetItem, QPushButton, QHeaderView, QMessageBox, QMainWindow
 from PyQt5 import uic, QtCore
 from models.category_model import CategoryModel
+from models.database_model import DatabaseConnection
 from controllers.category_form import CategoryForm
 
 class CategoryTable(QMainWindow):
@@ -9,18 +10,12 @@ class CategoryTable(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_category.ui", self)
+        self.categoryForm = CategoryForm()
         self._category_model = CategoryModel()
         self.load_category()
-        self.categoryForm = CategoryForm()
-        self.newCategoryFormButton.triggered.connect(lambda: self.categoryForm.show())
-        self.categoryForm.category_saved.connect(self.on_category_saved) 
-
-    def on_category_saved(self):
-        self.categoryForm.close()
-        self.load_category()
-
-        # Metodo para cargar la base de datos en el category_table
-    
+        self.newCategoryFormButton.triggered.connect(lambda: self.create_categories())
+        self.categoryForm.category_saved.connect(self.load_category) 
+ 
     def load_category(self):
         category_list = self._category_model.get_categories()
         self.categoryTable.setRowCount(len(category_list))
@@ -30,6 +25,8 @@ class CategoryTable(QMainWindow):
             self.categoryTable.setItem(i, 1, QTableWidgetItem(str(category_name)))
             self.categoryTable.setItem(i, 2, QTableWidgetItem(str(description)))
             self.categoryTable.item(i, 0).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.categoryTable.item(i, 1).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.categoryTable.item(i, 2).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
             # Botón para editar las categorias
              
@@ -58,6 +55,10 @@ class CategoryTable(QMainWindow):
         row = sender.property("row")
         category_id = self.categoryTable.item(row, 0).text()
         self.categoryForm.load_category_data(category_id)
+        self.categoryForm.show()
+
+    def create_categories(self):
+        self.categoryForm.reset_form()
         self.categoryForm.show()
 
     # Metodo para la eliminación de los resgistro a travez del category model
@@ -89,7 +90,8 @@ class CategoryTable(QMainWindow):
             success_msg.setWindowTitle("Confirmación")
             success_msg.exec_()
 
-    def closeEvent(self, ev) -> None:
-        self._category_model.close()
+    def closeEvent(self, ev):
+        db = DatabaseConnection()
+        db.close()
         return super().closeEvent(ev)
 

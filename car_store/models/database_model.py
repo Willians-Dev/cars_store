@@ -1,38 +1,27 @@
 import psycopg2
-from psycopg2 import OperationalError
 
-def singleton(cls):
-    instances = {}
+class DatabaseConnection:
+    _instance = None
 
-    def get_instance(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-
-    return get_instance
-
-@singleton
-class Database:
-    def __init__(self):
-        self._conn = None
-
-    def connect(self):
-        if self._conn is None:
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DatabaseConnection, cls).__new__(cls)
             try:
-                self._conn = psycopg2.connect(
-                    dbname="car_catalog",
-                    user="postgres",
-                    password="Trabajo123.",
-                    host="localhost",
-                    port="5432"
-                )
-                print("Conexión establecida correctamente.")
-            except OperationalError as e:
-                print(f"Error: {e}")
-        return self._conn
+                cls._instance._conn = psycopg2.connect("dbname=car_catalog user=postgres password=Trabajo123. host=localhost")
+                cls._instance._cur = cls._instance._conn.cursor()
+            except Exception as e:
+                print(f"Error al conectar a la base de datos: {e}")
+                raise e
+        return cls._instance
 
-    def disconnect(self):
-        if self._conn is not None:
-            self._conn.close()
-            self._conn = None
-            print("Conexión cerrada.")
+    @property
+    def cursor(self):
+        return self._instance._cur
+
+    @property
+    def connection(self):
+        return self._instance._conn
+
+    def close(self):
+        self._cur.close()
+        self._conn.close()

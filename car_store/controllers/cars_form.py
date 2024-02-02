@@ -14,17 +14,7 @@ class CarsForm(QMainWindow):
         uic.loadUi(root_path / "views/cars_form.ui", self)     
         self.saveCarsButton.clicked.connect(lambda: self.save_cars())
         self.cancelCarsButton.clicked.connect(lambda: self.close())
-        self.clear_form_fields() 
 
-    # Metodo para limpiar los campos al abrir el studen_form                                                            ###################        
-    def clear_form_fields(self):
-        self.serialTextLine.setText("")
-        self.brandTextLine.setText("")
-        self.modelTextLine.setText("")
-        self.transmisionTextLine.setText("")
-        self.priceTextLine.setText("")
-        self.yearTextLine.setText("")
-        
     # Método para guardar las categorias a traves del update_categoria
     
     def save_cars(self):
@@ -36,7 +26,7 @@ class CarsForm(QMainWindow):
                 self.modelTextLine.text(),
                 self.transmisionTextLine.text(),
                 self.priceTextLine.text(),
-                self.yearTextLine.text(),
+                self.yearTextLine.text()
             )
         else:
             self._cars_model.create_cars(
@@ -45,10 +35,10 @@ class CarsForm(QMainWindow):
                 self.modelTextLine.text(),
                 self.transmisionTextLine.text(),
                 self.priceTextLine.text(),
-                self.yearTextLine.text(),
+                self.yearTextLine.text()
             )    
         self.cars_saved.emit()
-        self.clear_form_fields()                     # Limpiar los campos después de guardar
+        self.close()                 # Limpiar los campos después de guardar
 
     def load_cars_data(self, cars_id):
         self.cars_id = cars_id
@@ -58,5 +48,15 @@ class CarsForm(QMainWindow):
             self.brandTextLine.setText(cars_data[2])
             self.modelTextLine.setText(cars_data[3])
             self.transmisionTextLine.setText(cars_data[4])
-            self.priceTextLine.setText(cars_data[5])
-            self.yearTextLine.setText(cars_data[6])
+            self.priceTextLine.setText(str(cars_data[5]))
+            self.yearTextLine.setText(str(cars_data[6]))
+
+        # Metodo para limpiar los campos al abrir el studen_form                                                            ###################        
+    def reset_form(self):
+        self.serialTextLine.setText("")
+        self.brandTextLine.setText("")
+        self.modelTextLine.setText("")
+        self.transmisionTextLine.setText("")
+        self.priceTextLine.setText("")
+        self.yearTextLine.setText("")
+        self._cars_id = None

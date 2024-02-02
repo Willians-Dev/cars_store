@@ -1,10 +1,10 @@
-from models.database_model import Database
+from models.database_model import DatabaseConnection
 
 class CategoryModel:
     def __init__(self):
-        self._db = Database()
-        self._conn = self._db.connect()
-        self._cur = self._conn.cursor()
+        db = DatabaseConnection()
+        self._conn = db.connection
+        self._cur = db.cursor
 
     # Modelo para obtner los registro de la tabla categoria
 
@@ -23,10 +23,14 @@ class CategoryModel:
     # Modelo para actualizar los registros de la tabla categoria
         
     def update_categories(self, id_category, category_name, description):
-        query = "UPDATE category SET category_name = %s, description = %s WHERE id_category = %s"
-        self._cur.execute(query, (id_category, category_name, description))
-        self._conn.commit()
-
+        try:
+            query = "UPDATE category SET category_name = %s, description = %s WHERE id_category = %s"
+            self._cur.execute(query, (category_name, description, id_category))
+            self._conn.commit()
+            return True
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            
     def get_category_by_id(self, category_id):
         try:
             query = "SELECT * FROM category WHERE id_category = %s"
@@ -37,13 +41,9 @@ class CategoryModel:
             return None
         
     def delete_category(self, category_id):
-        query = "DELETE FROM category WHERE id_category = %s"
-        self._cur.execute(query, (category_id,))
-        self._conn.commit()
-        
-    # Función para cerrar las conexiones
-
-    def close(self):
-        self._cur.close()
-        self._conn.close()
-    
+        try:
+            query = "DELETE FROM category WHERE id_category = %s"
+            self._cur.execute(query, (category_id,))
+            self._conn.commit()
+        except Exception as e:
+            print(f"Error: {str(e)}")

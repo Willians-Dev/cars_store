@@ -19,6 +19,11 @@
      <widget class="QTableWidget" name="carsTableWidget">
       <column>
        <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>Serial</string>
        </property>
       </column>
