@@ -15,6 +15,7 @@ class CategoryTable(QMainWindow):
         self.load_category()
         self.newCategoryFormButton.triggered.connect(lambda: self.create_categories())
         self.categoryForm.category_saved.connect(self.load_category) 
+        self.quitCategoryFormButton.triggered.connect(self.close)
  
     def load_category(self):
         category_list = self._category_model.get_categories()

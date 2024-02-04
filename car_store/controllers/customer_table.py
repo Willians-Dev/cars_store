@@ -16,6 +16,7 @@ class CustomersTable(QMainWindow):
 
         self.addNewCustomerForm.triggered.connect(lambda: self.create_customer())
         self.customerForm.customer_saved.connect(self.load_customer) 
+        self.quitCustomerFormButton.triggered.connect(self.close)
   
     def load_customer(self):
         customer_list = self._customer_model.get_customers()

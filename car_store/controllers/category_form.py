@@ -38,7 +38,7 @@ class CategoryForm(QMainWindow):
         if category_data:
             self.categoryNameLineText.setText(category_data[1])
             self.categoryDescriptionLineText.setText(category_data[2])
-
+            
     def reset_form(self):
         self.categoryNameLineText.setText("")
         self.categoryDescriptionLineText.setText("")

@@ -15,6 +15,7 @@ class CarsTable(QMainWindow):
         self.load_cars()
         self.newCarFormButton.triggered.connect(lambda: self.create_cars())
         self.carsrForm.cars_saved.connect(self.load_cars)
+        self.quitCarsFormButton.triggered.connect(self.close)
         
         # Metodo para cargar la base de datos en el cars_table
     
@@ -22,14 +23,15 @@ class CarsTable(QMainWindow):
         cars_list = self._cars_model.get_cars()
         self.carsTableWidget.setRowCount(len(cars_list))
         for i, cars in enumerate(cars_list):
-            id_car, serial_number, brand, model, transmission, price, year, *extra = cars
+            id_car, serial_number, brand, model, category_name, transmission, price, year, *extra = cars
             self.carsTableWidget.setItem(i, 0, QTableWidgetItem(str(id_car)))
             self.carsTableWidget.setItem(i, 1, QTableWidgetItem(str(serial_number)))
             self.carsTableWidget.setItem(i, 2, QTableWidgetItem(str(brand)))
             self.carsTableWidget.setItem(i, 3, QTableWidgetItem(str(model)))
-            self.carsTableWidget.setItem(i, 4, QTableWidgetItem(str(transmission)))
-            self.carsTableWidget.setItem(i, 5, QTableWidgetItem(str(price)))
-            self.carsTableWidget.setItem(i, 6, QTableWidgetItem(str(year)))
+            self.carsTableWidget.setItem(i, 4, QTableWidgetItem(str(category_name)))  # Columna de nombre de categoría
+            self.carsTableWidget.setItem(i, 5, QTableWidgetItem(str(transmission)))
+            self.carsTableWidget.setItem(i, 6, QTableWidgetItem(str(price)))
+            self.carsTableWidget.setItem(i, 7, QTableWidgetItem(str(year)))
             self.carsTableWidget.item(i, 0).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             self.carsTableWidget.item(i, 1).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             self.carsTableWidget.item(i, 2).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
@@ -37,20 +39,21 @@ class CarsTable(QMainWindow):
             self.carsTableWidget.item(i, 4).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             self.carsTableWidget.item(i, 5).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             self.carsTableWidget.item(i, 6).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.carsTableWidget.item(i, 7).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
             # Botón para editar los carros
              
             edit_button = QPushButton("Editar")
             edit_button.clicked.connect(self.edit_cars)
             edit_button.setProperty("row", i)
-            self.carsTableWidget.setCellWidget(i, 7, edit_button)
+            self.carsTableWidget.setCellWidget(i, 8, edit_button)
 
             # Botón para Borrar las carros
 
             delete_button = QPushButton("Borrar")
             delete_button.clicked.connect(self.delete_cars)
             delete_button.setProperty("row", i)
-            self.carsTableWidget.setCellWidget(i, 8, delete_button)
+            self.carsTableWidget.setCellWidget(i, 9, delete_button)
         
         # Ajustar automáticamente el tamaño de todas las columnas
         # self.studentsTable.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -62,6 +65,7 @@ class CarsTable(QMainWindow):
         self.carsTableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
         self.carsTableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
         self.carsTableWidget.horizontalHeader().setSectionResizeMode(6, QHeaderView.Stretch)
+        self.carsTableWidget.horizontalHeader().setSectionResizeMode(7, QHeaderView.Stretch)
         self.carsTableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
     def edit_cars(self):
@@ -105,5 +109,6 @@ class CarsTable(QMainWindow):
             success_msg.exec_()
 
     def closeEvent(self, ev) -> None:
-        self._cars_model.close()
+        db = DatabaseConnection()
+        db.close()
         return super().closeEvent(ev)
