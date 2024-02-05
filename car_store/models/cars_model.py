@@ -10,9 +10,9 @@ class CarsModel:
 
     def get_cars(self):
         query = """
-                SELECT c.id_car, c.serial_number, c.brand, c.model, cat.category_name, c.transmission, c.price, c.year 
+                SELECT c.id_car, c.serial, c.brand, c.model, cat.category_name, c.transmission, c.price, c.year 
                 FROM car c
-                LEFT JOIN category cat ON c.id_category01 = cat.id_category
+                INNER JOIN category cat ON c.id_category01 = cat.id_category
                 ORDER BY c.year
                 """
         self._cur.execute(query)
@@ -20,16 +20,16 @@ class CarsModel:
     
     # Modelo para agregar registros a la tabla cars a la base datos
 
-    def create_cars(self, serial_number, brand, model, transmission, price, year, id_category01):
-        query = """INSERT INTO car (serial_number, brand, model, transmission, price, year, id_category01) 
-                   VALUES (%s, %s, %s, %s, %s, %s, %s) 
-                   ON CONFLICT (serial_number) 
-                   DO UPDATE SET brand = EXCLUDED.brand, model = EXCLUDED.model, 
-                   transmission = EXCLUDED.transmission, price = EXCLUDED.price, 
-                   year = EXCLUDED.year, id_category01 = EXCLUDED.id_category01
-                   RETURNING id_car"""
+    def create_cars(self, serial, brand, model, transmission, price, year, id_category01):
+        query = """INSERT INTO car (serial, brand, model, transmission, price, year, id_category01) 
+               VALUES (%s, %s, %s, %s, %s, %s, %s) 
+               ON CONFLICT (serial) 
+               DO UPDATE SET brand = EXCLUDED.brand, model = EXCLUDED.model, 
+               transmission = EXCLUDED.transmission, price = EXCLUDED.price, 
+               year = EXCLUDED.year, id_category01 = EXCLUDED.id_category01
+               RETURNING id_car"""
         try:
-            self._cur.execute(query, (serial_number, brand, model, transmission, price, year, id_category01))
+            self._cur.execute(query, (serial, brand, model, transmission, price, year, id_category01))
             self._conn.commit()
             print("Registro insertado correctamente.")
         except Exception as e:
@@ -38,9 +38,9 @@ class CarsModel:
 
     # Modelo para actualizar los registros de la tabla cars
         
-    def update_cars(self, id_car, serial_number, brand, model, id_category01, transmission, price, year):
-        query = "UPDATE car SET serial_number = %s, brand = %s, model = %s, id_category01 = %s, transmission = %s, price = %s, year = %s WHERE id_car = %s"
-        self._cur.execute(query, (serial_number, brand, model, id_category01, transmission, price, year, id_car))
+    def update_cars(self, id_car, serial, brand, model, id_category01, transmission, price, year):
+        query = "UPDATE car SET serial = %s, brand = %s, model = %s, id_category01 = %s, transmission = %s, price = %s, year = %s WHERE id_car = %s"
+        self._cur.execute(query, (serial, brand, model, id_category01, transmission, price, year, id_car))
         self._conn.commit()
 
     def get_cars_by_id(self, car_id):

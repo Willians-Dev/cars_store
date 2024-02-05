@@ -5,6 +5,7 @@ import pathlib
 from controllers.category_table import CategoryTable
 from controllers.customer_table import CustomersTable
 from controllers.cars_table import CarsTable
+from controllers.purchase_table import PurchaseTable
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -12,9 +13,14 @@ class MainWindow(QMainWindow):
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_window.ui", self)
 
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self._category_table = CategoryTable() 
         self._customer_table = CustomersTable()
         self._cars_table = CarsTable()
+        self._purchase_table = PurchaseTable()
 
         self.category_main_button = self.findChild(QPushButton, "categoryMainButton")
         self.category_main_button.clicked.connect(self.open_categoryTable)
@@ -38,4 +44,4 @@ class MainWindow(QMainWindow):
         self._customer_table.show()
 
     def open_purchases_window(self):
-        print("Abrir ventana de compras")
+        self._purchase_table.show()

@@ -21,13 +21,13 @@ class CarsForm(QMainWindow):
     def load_categories(self):
         categories = self._category_model.get_categories()  # Método para obtener las categorías del modelo
         self.categoryComboBox.clear()
-        for _ , category_name, _ in categories:
-            self.categoryComboBox.addItem(category_name)  # Agregar solo el nombre de la categoría al combo box
-
-    # Método para guardar las categorias a traves del update_categoria
+        for category_id, category_name, _ in categories:
+            self.categoryComboBox.addItem(category_name, userData=category_id)  # Agregar solo el category_name al combo box, pero almacenar el id_category como userData
+        # Método para guardar las categorias a traves del update_categoria
     
     def save_cars(self):
         if self._cars_id:   
+            category_id = self.categoryComboBox.currentData()  # Obtener el id_category seleccionado
             self._cars_model.update_cars(
                 self._cars_id,
                 self.serialTextLine.text(),
@@ -36,9 +36,10 @@ class CarsForm(QMainWindow):
                 self.transmisionTextLine.text(),
                 self.priceTextLine.text(),
                 self.yearTextLine.text(),
-                self.categoryComboBox.currentData() 
+                category_id  # Pasar el id_category como argumento
             )
         else:
+            category_id = self.categoryComboBox.currentData()  # Obtener el id_category seleccionado
             self._cars_model.create_cars(
                 self.serialTextLine.text(),
                 self.brandTextLine.text(),
@@ -46,10 +47,10 @@ class CarsForm(QMainWindow):
                 self.transmisionTextLine.text(),
                 self.priceTextLine.text(),
                 self.yearTextLine.text(),
-                self.categoryComboBox.currentData()
+                category_id  # Pasar el id_category como argumento
             )    
         self.cars_saved.emit()
-        self.close()                 # Limpiar los campos después de guardar
+        self.close()  
 
     def load_cars_data(self, cars_id):
         self.cars_id = cars_id

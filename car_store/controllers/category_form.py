@@ -22,12 +22,12 @@ class CategoryForm(QMainWindow):
             self._category_model.update_categories(
                 self.category_id,
                 self.categoryNameLineText.text(),
-                self.categoryDescriptionLineText.text(),
+                self.categoryDescriptionLineText.text()
             )
         else:
             self._category_model.create_categories(
                 self.categoryNameLineText.text(),
-                self.categoryDescriptionLineText.text(),
+                self.categoryDescriptionLineText.text()
             )    
         self.category_saved.emit()
         self.close()                     # Limpiar los campos después de guardar
