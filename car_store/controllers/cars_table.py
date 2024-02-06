@@ -1,5 +1,5 @@
 import pathlib
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QPushButton, QHeaderView, QMessageBox, QMainWindow
+from PyQt5.QtWidgets import QTableWidgetItem, QPushButton, QHeaderView, QMessageBox, QMainWindow
 from PyQt5 import uic, QtCore
 from models.cars_model import CarsModel
 from models.database_model import DatabaseConnection

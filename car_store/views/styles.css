@@ -3,3 +3,19 @@ QWidget#widget_2 {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+/* Estilo para los botones QPushButton */
+QPushButton {
+    background-color: #92f990; /* Azul */
+    color: rgb(1, 1, 1); /* Texto blanco */
+    border: 2px solid #459b0f; /* Color del Borde */
+    border-radius: 8px; /* Bordes redondeados */
+    margin: 5px; /* Margen exterior */
+    min-width: auto; /* Ancho mínimo */
+    min-height: auto;
+}
+
+/* Estilo para los botones QPushButton al pasar el cursor sobre ellos */
+QPushButton:hover {
+    background-color: #02B472; /* Verde azulado */
+}

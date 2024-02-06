@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>purchaseTable</class>
+ <widget class="QMainWindow" name="purchaseTable">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,171 +11,50 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Compras</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QComboBox" name="customerPurchaseComboBox">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>40</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QDateTimeEdit" name="CompraDateTime">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>90</y>
-      <width>211</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>50</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Cliente</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>110</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Fecha</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="SaveCompraButton">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>460</y>
-      <width>121</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Guardar</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="CancelCompraButton">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>460</y>
-      <width>121</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Cancelar</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="purchaseTableWidget">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>160</y>
-      <width>441</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>ID</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Producto</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Categoria</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>390</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Total</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="priceTotalLabel">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>390</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>200</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_2">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>240</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_3">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>280</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableWidget" name="purchaseTableWidget">
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fecha</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Ciudad</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Cliente</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Precio Total</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Metodo de Pago</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Detalles</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -190,18 +69,18 @@
     <property name="title">
      <string>Archivo</string>
     </property>
-    <addaction name="actionNueva_Compra"/>
-    <addaction name="actionSalir"/>
+    <addaction name="addNewPurchaseForm"/>
+    <addaction name="quitPurchaseFormButton"/>
    </widget>
    <addaction name="menuArchivo"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionNueva_Compra">
+  <action name="addNewPurchaseForm">
    <property name="text">
     <string>Nueva Compra</string>
    </property>
   </action>
-  <action name="actionSalir">
+  <action name="quitPurchaseFormButton">
    <property name="text">
     <string>Salir</string>
    </property>

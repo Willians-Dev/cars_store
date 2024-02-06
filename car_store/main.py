@@ -3,6 +3,6 @@ from PyQt5.QtWidgets import QApplication
 from controllers.main_window import MainWindow
 
 app = QApplication(sys.argv)
-psycopg_example = MainWindow()
-psycopg_example.show()
+catalog_cars = MainWindow()
+catalog_cars.show()
 sys.exit(app.exec())
