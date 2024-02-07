@@ -1,0 +1,41 @@
+import pathlib
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
+from PyQt5 import uic, QtCore
+from models.details_model import DetailsModel
+
+class PurchaseDetails(QMainWindow):
+    details_saved = pyqtSignal()
+    def __init__(self) -> None:
+        super().__init__()
+        root_path = pathlib.Path(__file__).parent.parent
+        uic.loadUi(root_path / "views/purchase_details.ui", self)
+        self.details_id = None
+        self._details_model = DetailsModel()
+        self.load_details()
+
+    def load_details(self):
+        details_list = self._details_model.get_details()
+        self.detailTableWidget.setRowCount(len(details_list))
+        for i, purchase in enumerate(details_list):
+            id_purchase, date, cliente, producto, categoria , precio_total, *extra = purchase
+            self.detailTableWidget.setItem(i, 0, QTableWidgetItem(str(id_purchase)))
+            self.detailTableWidget.setItem(i, 1, QTableWidgetItem(str(date)))
+            self.detailTableWidget.setItem(i, 2, QTableWidgetItem(str(cliente)))
+            self.detailTableWidget.setItem(i, 3, QTableWidgetItem(str(producto)))
+            self.detailTableWidget.setItem(i, 4, QTableWidgetItem(str(categoria)))
+            self.detailTableWidget.setItem(i, 5, QTableWidgetItem(str(precio_total)))
+            self.detailTableWidget.item(i, 0).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.detailTableWidget.item(i, 1).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.detailTableWidget.item(i, 2).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.detailTableWidget.item(i, 3).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.detailTableWidget.item(i, 4).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            self.detailTableWidget.item(i, 5).setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)  
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)  
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
+        self.detailTableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
+        self.detailTableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)

@@ -10,6 +10,11 @@ class CategoryTable(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_category.ui", self)
+        
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self.categoryForm = CategoryForm()
         self._category_model = CategoryModel()
         self.load_category()

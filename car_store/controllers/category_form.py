@@ -11,7 +11,12 @@ class CategoryForm(QMainWindow):
         self._category_model = CategoryModel()
         self.category_id = None
         root_path = pathlib.Path(__file__).parent.parent
-        uic.loadUi(root_path / "views/category_form.ui", self)     
+        uic.loadUi(root_path / "views/category_form.ui", self) 
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self.saveCategoryButton.clicked.connect(lambda: self.save_category())
         self.cancelCategoryButton.clicked.connect(lambda: self.close())
 

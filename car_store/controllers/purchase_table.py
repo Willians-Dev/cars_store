@@ -4,6 +4,7 @@ from PyQt5 import uic, QtCore
 from models.database_model import DatabaseConnection
 from models.purchase_model import PurchaseModel
 from controllers.purchase_form import PurchaseForm
+from controllers.purchase_details import PurchaseDetails
 
 class PurchaseTable(QMainWindow):
     def __init__(self):
@@ -12,12 +13,16 @@ class PurchaseTable(QMainWindow):
         uic.loadUi(root_path / "views/main_purchase.ui", self)
         self._purchase_model = PurchaseModel()
         self.puchaseForm = PurchaseForm()
+        self.purchaseDetails = PurchaseDetails()
         self.load_purchase()
         self.addNewPurchaseForm.triggered.connect(lambda: self.create_purchases())
         self.puchaseForm.purchase_saved.connect(self.load_purchase)
         self.quitPurchaseFormButton.triggered.connect(self.close)
+        self.purchaseForm = PurchaseForm()
+        self.purchaseForm.purchase_saved.connect(self.update_purchase_table)
 
     def load_purchase(self):
+        
         purchase_list = self._purchase_model.get_purchase()
         self.purchaseTableWidget.setRowCount(len(purchase_list))
         for i, purchase in enumerate(purchase_list):
@@ -38,9 +43,9 @@ class PurchaseTable(QMainWindow):
             # Botón para editar los clientes
              
             detail_button = QPushButton("Detalles")
-            #detail_button.clicked.connect(self.edit_customer)
+            detail_button.clicked.connect(self.show_details)
             detail_button.setProperty("row", i)
-            #self.costumerTableWidget.setCellWidget(i, 5, edit_button)
+            self.purchaseTableWidget.setCellWidget(i, 6, detail_button)
 
         self.purchaseTableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)  
         self.purchaseTableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)  
@@ -49,10 +54,23 @@ class PurchaseTable(QMainWindow):
         self.purchaseTableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
         self.purchaseTableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
         self.purchaseTableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-    
+
+    def show_details(self):
+        sender = self.sender()
+        row = sender.property("row")
+        purchase_id = self.purchaseTableWidget.item(row, 0).text()
+        self.purchaseDetails.load_details_data(purchase_id)
+        self.purchaseDetails.show()
+
+
     def create_purchases(self):
         self.puchaseForm.reset_form()
         self.puchaseForm.show()
+    
+    def update_purchase_table(self):
+        # Lógica para actualizar la tabla principal después de que se ha guardado una compra
+        # Puedes llamar al método que obtiene las compras y actualiza la tabla
+        self.load_purchase()
 
     def closeEvent(self, ev) -> None:
         db = DatabaseConnection()

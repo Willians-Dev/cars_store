@@ -19,3 +19,16 @@ QPushButton {
 QPushButton:hover {
     background-color: #02B472; /* Verde azulado */
 }
+
+/* Estilo para los botones QPushButton al ser presionados */
+QPushButton:pressed {
+    background-color: #004080; /* Azul oscuro */
+    border-color: #002b4d; /* Borde azul más oscuro */
+}
+
+/* Estilo para el contenedor principal */
+QWidget {
+    background-color: #F0F0F0; /* Fondo gris claro */
+    border: 2px solid #336699; /* Borde azul oscuro */
+    border-radius: 8px; /* Bordes redondeados */
+}

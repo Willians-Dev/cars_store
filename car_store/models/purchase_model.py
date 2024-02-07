@@ -14,40 +14,27 @@ class PurchaseModel:
         self._cur.execute(query)
         return self._cur.fetchall()
     
-    def create_purchase(self, id_purchase, date, city, total_price, payment_method, id_customer02):
-        # Consulta SQL para insertar una nueva compra en la base de datos
-        query = """
-            INSERT INTO purchase (id_purchase, date, city, total_price, payment_method, id_customer02) 
-            VALUES (%s, %s, %s, %s, %s, %s) 
-            RETURNING id_purchase;
-        """
-        try:
-            # Ejecutar la consulta SQL con los parámetros proporcionados
-            self._cur.execute(query, (id_purchase, date, city, total_price, payment_method, id_customer02))
-            # Obtener el ID de la compra recién insertada
-            purchase_id = self._cur.fetchone()[0]
-            # Confirmar los cambios en la base de datos
-            self._conn.commit()
-            return purchase_id  # Devolver el ID de la nueva compra insertada
-        except Exception as e:
-            # Si ocurre algún error, revertir los cambios y mostrar un mensaje de error
-            self._conn.rollback()
-            print("Error al guardar la compra:", e)
-            return None
-    
-    def get_products_and_categories(self):
-        query = """SELECT car.id_car, car.model, category.category_name 
-                FROM car 
-                INNER JOIN category ON car.id_category01 = category.id_category"""
-        self._cur.execute(query)
-        return self._cur.fetchall()
-        
     def get_purchase_join(self):
         query = """
-                SELECT p.id_purchase, c.model, ca.category_name
+                SELECT p.id_purchase, c.model, ca.category_name, c.price
                 FROM purchase p
                 INNER JOIN car c ON p.id_purchase = c.id_purchase01
                 INNER JOIN category ca ON c.id_category01 = ca.id_category;
                 """
         self._cur.execute(query)
         return self._cur.fetchall()
+    
+    def save_purchase(self, id_customer, date, total_price, id_purchase):
+        # Realizar el query para insertar los datos en la tabla "purchase"
+        query_purchase = "INSERT INTO purchase (id_customer02, date, total_price) VALUES (%s, %s, %s)"
+        self._cur.execute(query_purchase, (id_customer, date, total_price))
+        self._conn.commit()
+        
+        # Obtener el id_purchase recién insertado
+        #id_purchase_inserted = self._cur.lastrowid
+
+        # Realizar el query para insertar los datos en la tabla "car" usando el id_purchase pasado como argumento
+        query_car = "INSERT INTO car (id_purchase01) VALUES (%s)"
+        self._cur.execute(query_car, (id_purchase,))
+        self._conn.commit()
+
