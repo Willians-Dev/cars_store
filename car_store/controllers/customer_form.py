@@ -27,7 +27,7 @@ class CustomerForm(QMainWindow):
                 self.emailTextLine.text()
         )
         else:
-            self._customers_model.create_customers(
+            self._customers_model.create_customer(
                 self.documentTextLine.text(),
                 self.firstNameTextLine.text(),
                 self.lastNameTextLine.text(),

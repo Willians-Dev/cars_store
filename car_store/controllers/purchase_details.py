@@ -13,6 +13,7 @@ class PurchaseDetails(QMainWindow):
         self.details_id = None
         self._details_model = DetailsModel()
         self.load_details()
+        self.quitDetailButton.clicked.connect(self.close)
 
     def load_details(self):
         details_list = self._details_model.get_details()

@@ -9,16 +9,23 @@ class CustomersModel:
     # Modelo para obtener los clientes desde la base de datos
 
     def get_customers(self):
-        query = "SELECT * FROM customer ORDER BY last_name"
-        self._cur.execute(query)
-        return self._cur.fetchall()
+        try:
+            query = "SELECT * FROM customer ORDER BY last_name"
+            self._cur.execute(query)
+            return self._cur.fetchall()
+        except Exception as e:
+            print(f"Error al obtener clientes: {e}")
+            return None
     
     # Modelo para agregar registros a la tabla clientes a la base datos
 
-    def create_customers(self, document, first_name, last_name, email):
-        query = "INSERT INTO customer (document, first_name, last_name, email) VALUES (%s, %s, %s, %s)"
-        self._cur.execute(query, (int(document), first_name, last_name, email))
-        self._conn.commit()
+    def create_customer(self, document, first_name, last_name, email):
+        try:
+            query = "INSERT INTO customer (document, first_name, last_name, email) VALUES (%s, %s, %s, %s)"
+            self._cur.execute(query, (document, first_name, last_name, email))
+            self._conn.commit()
+        except Exception as e:
+            print(f"Error creating customer: {e}")
 
     # Modelo para actualizar los registros de la tabla clientes
         

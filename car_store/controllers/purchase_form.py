@@ -98,6 +98,5 @@ class PurchaseForm(QMainWindow):
             # Manejar el caso en que no se seleccionó ninguna fila o no se encontró el id_purchase
             print("No se seleccionó ninguna fila o el id_purchase no está disponible")
 
-
     def reset_form(self):
             self._purchase_id = None

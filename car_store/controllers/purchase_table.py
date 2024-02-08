@@ -58,17 +58,16 @@ class PurchaseTable(QMainWindow):
     def show_details(self):
         sender = self.sender()
         row = sender.property("row")
-        purchase_id = self.purchaseTableWidget.item(row, 0).text()
-        self.purchaseDetails.load_details_data(purchase_id)
+        # No es necesario pasar purchase_id como argumento
+        # purchase_id = self.purchaseTableWidget.item(row, 0).text()
+        self.purchaseDetails.load_details()  # No se pasa ningún argumento
         self.purchaseDetails.show()
-
-
+                
     def create_purchases(self):
         self.puchaseForm.reset_form()
         self.puchaseForm.show()
     
     def update_purchase_table(self):
-        # Lógica para actualizar la tabla principal después de que se ha guardado una compra
         # Puedes llamar al método que obtiene las compras y actualiza la tabla
         self.load_purchase()
 

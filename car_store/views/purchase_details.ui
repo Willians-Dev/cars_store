@@ -14,32 +14,6 @@
    <string>Detalles de Compra</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>50</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Cliente</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>100</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Fecha</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="quitDetailButton">
     <property name="geometry">
      <rect>
@@ -92,32 +66,6 @@
       <string>Precio Total</string>
      </property>
     </column>
-   </widget>
-   <widget class="QLabel" name="detailClientLabel">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>50</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="detailDateLabel">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>100</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
