@@ -1,6 +1,6 @@
 import pathlib
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView, QPushButton
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QHeaderView
 from PyQt5 import uic, QtCore
 from models.details_model import DetailsModel
 
@@ -10,6 +10,11 @@ class PurchaseDetails(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/purchase_details.ui", self)
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self.details_id = None
         self._details_model = DetailsModel()
         self.load_details()
@@ -40,3 +45,14 @@ class PurchaseDetails(QMainWindow):
         self.detailTableWidget.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
         self.detailTableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
         self.detailTableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+
+    def load_details_data(self, customer_id):
+        details_data = self._details_model.get_details_by_id(customer_id)
+        if details_data:
+            self.detailTableWidget.setRowCount(1)  # Configura una sola fila para mostrar los datos
+            for i, data in enumerate(details_data):
+                item = QTableWidgetItem(str(data))
+                self.detailTableWidget.setItem(0, i, item)
+        else:
+            # Si no se encuentran detalles para el cliente, limpiar la tabla
+            self.detailTableWidget.setRowCount(0)

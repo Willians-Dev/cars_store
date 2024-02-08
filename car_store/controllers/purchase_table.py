@@ -60,13 +60,13 @@ class PurchaseTable(QMainWindow):
         self.purchaseTableWidget.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
         self.purchaseTableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
-    def show_details(self):
-        sender = self.sender()
-        row = sender.property("row")
-        # No es necesario pasar purchase_id como argumento
-        # purchase_id = self.purchaseTableWidget.item(row, 0).text()
-        self.purchaseDetails.load_details()  # No se pasa ningún argumento
-        self.purchaseDetails.show()
+    #def show_details(self):
+    #    sender = self.sender()
+    #    row = sender.property("row")
+    #    # No es necesario pasar purchase_id como argumento
+    #    # purchase_id = self.purchaseTableWidget.item(row, 0).text()
+    #    self.purchaseDetails.load_details()  # No se pasa ningún argumento
+    #    self.purchaseDetails.show()
                 
     def create_purchases(self):
         self.puchaseForm.reset_form()
@@ -80,3 +80,10 @@ class PurchaseTable(QMainWindow):
         db = DatabaseConnection()
         db.close()
         return super().closeEvent(ev)
+    
+    def show_details(self):
+        sender = self.sender()
+        row = sender.property("row")
+        customer_id = self.purchaseTableWidget.item(row, 0).text()
+        self.purchaseDetails.load_details_data(customer_id)
+        self.purchaseDetails.show()
