@@ -14,6 +14,11 @@ class CarsForm(QMainWindow):
         self._cars_id = None
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/cars_form.ui", self)
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+            
         self.saveCarsButton.clicked.connect(lambda: self.save_cars())
         self.cancelCarsButton.clicked.connect(lambda: self.close())
         self.load_categories()

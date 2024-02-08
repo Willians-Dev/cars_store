@@ -10,6 +10,11 @@ class CarsTable(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_cars.ui", self)
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self.carsrForm = CarsForm()
         self._cars_model = CarsModel()
         self.load_cars()

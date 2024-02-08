@@ -11,7 +11,12 @@ class CustomerForm(QMainWindow):
         self._customers_model = CustomersModel()
         self.customers_id = None
         root_path = pathlib.Path(__file__).parent.parent
-        uic.loadUi(root_path / "views/customer_form.ui", self)     
+        uic.loadUi(root_path / "views/customer_form.ui", self) 
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self.saveCostumerButton.clicked.connect(lambda: self.save_customer())
         self.cancelCostumerBotton.clicked.connect(lambda: self.close())
   
@@ -19,7 +24,7 @@ class CustomerForm(QMainWindow):
     
     def save_customer(self):
         if self.customers_id:   
-             self._customers_model.update_customers(
+             self._customers_model.update_customer(
                 self.customers_id,
                 self.documentTextLine.text(),
                 self.firstNameTextLine.text(),
@@ -38,7 +43,7 @@ class CustomerForm(QMainWindow):
 
     def load_customers_data(self, customer_id):
         self.customers_id = customer_id
-        customer_data = self._customers_model.get_customers_by_id(customer_id)
+        customer_data = self._customers_model.get_customer_by_id(customer_id)
         if customer_data:
             self.documentTextLine.setText(str(customer_data[1]))
             self.firstNameTextLine.setText(customer_data[2])

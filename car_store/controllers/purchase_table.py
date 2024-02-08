@@ -11,6 +11,11 @@ class PurchaseTable(QMainWindow):
         super().__init__()
         root_path = pathlib.Path(__file__).parent.parent
         uic.loadUi(root_path / "views/main_purchase.ui", self)
+
+        css_path = pathlib.Path(__file__).parent.parent / "views/styles.css"
+        with open(css_path, "r") as f:
+            self.setStyleSheet(f.read())
+
         self._purchase_model = PurchaseModel()
         self.puchaseForm = PurchaseForm()
         self.purchaseDetails = PurchaseDetails()

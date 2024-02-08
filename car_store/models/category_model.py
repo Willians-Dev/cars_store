@@ -16,9 +16,12 @@ class CategoryModel:
     # Modelo para insertar datos en la tabla categoria
 
     def create_categories(self, category_name, description):
-        query = "INSERT INTO category (category_name, description) VALUES (%s, %s)"
-        self._cur.execute(query, (category_name, description))
-        self._conn.commit()
+        try:
+            query = "INSERT INTO category (category_name, description) VALUES (%s, %s)"
+            self._cur.execute(query, (category_name, description))
+            self._conn.commit()
+        except Exception as e:
+            print(f"Error al crear la categoria: {e}")
 
     # Modelo para actualizar los registros de la tabla categoria
         

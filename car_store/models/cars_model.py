@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QMessageBox
 from models.database_model import DatabaseConnection
 
 class CarsModel:
@@ -34,7 +35,13 @@ class CarsModel:
             print("Registro insertado correctamente.")
         except Exception as e:
             self._conn.rollback()
-            print("Error al insertar el registro:", e)
+            error_msg = QMessageBox()
+            error_msg.setIcon(QMessageBox.Critical)
+            error_msg.setText("Error al insertar el registro.")
+            error_msg.setInformativeText("Se produjo un error al intentar insertar el registro en la base de datos.")
+            error_msg.setWindowTitle("Error")
+            error_msg.setDetailedText(f"Error detallado: {str(e)}")
+            error_msg.exec_()
 
     # Modelo para actualizar los registros de la tabla cars
         
@@ -47,6 +54,7 @@ class CarsModel:
         try:
             query = "SELECT * FROM car WHERE id_car = %s"
             self._cur.execute(query, (car_id,))
+            self._conn.commit()
             return self._cur.fetchone()
         except Exception as e:
             print(f"Error al obtener el carro: {str(e)}")
